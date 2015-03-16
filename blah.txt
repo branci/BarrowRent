@@ -2,3 +2,6 @@ Fungujem?
  ja si myslim ze "TAK URCITEEEE"
  
  oooooooook
+ 
+ <chod uz kodit kto:"marek" preco:"preboha">
+ </chod uz kodit>
