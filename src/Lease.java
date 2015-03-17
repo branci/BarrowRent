@@ -65,7 +65,7 @@ public class Lease {
         this.startTime = startTime;
     }
     
-    public Date startTime() {
+    public Date getStartTime() {
         return startTime;
     }
     
@@ -82,6 +82,16 @@ public class Lease {
         return "Lease{" + id + '}';
     }
     
-    //EQUALS a HASHCODE?
+    //EQUALS a HASHCODE? !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    
+    @Override
+    public int hashCode() {
+        return super.hashCode(); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return super.equals(obj); //To change body of generated methods, choose Tools | Templates.
+    }
     
 }

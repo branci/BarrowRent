@@ -5,6 +5,8 @@
 package ImplTests;
 
 
+import barrowrent.Customer;
+import barrowrent.CustomerManagerImpl;
 import java.util.Date;
 import java.util.Arrays;
 import java.util.Collections;
@@ -26,7 +28,7 @@ import static org.junit.Assert.*;
 public class CustomerManagerImplTest {
     
     private CustomerManagerImpl manager;
-    private static SimpleDateFormat sdf = new SimpleDateFormat("dd-M-yyyy");
+    private static SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 
     
     
@@ -37,7 +39,7 @@ public class CustomerManagerImplTest {
     
 
     @Test
-    public void createCustomer() throws ParseException {
+    public void createCustomer() {
         
 
         
@@ -53,7 +55,7 @@ public class CustomerManagerImplTest {
     }
 
     @Test
-    public void getContact() throws ParseException {
+    public void getContact() {
         
         assertNull(manager.getCustomerById(1l));
 
@@ -68,7 +70,7 @@ public class CustomerManagerImplTest {
     }
 
     @Test
-    public void getAllContacts() throws ParseException {
+    public void getAllContacts() {
 
         assertTrue(manager.findAllCustomers().isEmpty());
 
@@ -89,51 +91,39 @@ public class CustomerManagerImplTest {
         assertDeepEquals(expected, actual);
     }
     
-    @Test
+    @Test(expected = IllegalArgumentException.class)
     public void addContactFromNull() {
-        try {
-            manager.createCustomer(null);
-            fail();
-        } catch (IllegalArgumentException ex) {
-            //OK
-        }
+
+        manager.createCustomer(null);
+
     }
     
-    @Test 
+    @Test(expected = IllegalArgumentException.class)
     public void addContactWithId() {
 
         Customer customer = newCustomer("Jozko Mrkvicka",setDateDefault(),"0936SK25");
         customer.setId(1l);
-        try {
-            manager.createCustomer(customer);
-            fail();
-        } catch (IllegalArgumentException ex) {
-            //OK
-        }
+ 
+        manager.createCustomer(customer);
+
     }
    
-    @Test 
+    @Test(expected = IllegalArgumentException.class) 
     public void addContactWithNullName() {
 
         Customer customer = newCustomer(null,setDateDefault(),"0936SK25");
-        try {
-            manager.createCustomer(customer);
-            fail();
-        } catch (IllegalArgumentException ex) {
-            //OK
-        }
+  
+        manager.createCustomer(customer);
+ 
     }
     
-    @Test 
+    @Test(expected = IllegalArgumentException.class) 
     public void addContactWithNullIdNumber() {
 
         Customer customer = newCustomer("Jozko Mrkvicka",setDateDefault(),null);
-        try {
-            manager.createCustomer(customer);
-            fail();
-        } catch (IllegalArgumentException ex) {
-            //OK
-        }
+
+        manager.createCustomer(customer);
+
     }
     
     
@@ -178,84 +168,61 @@ public class CustomerManagerImplTest {
     }
     
     
-    @Test
+    @Test(expected = IllegalArgumentException.class)
     public void updateCustomerWithNullArgument() {
-
-        Customer customer = newCustomer("Jozko Mrkvicka",setDateDefault(),"0936SK25");
-        manager.createCustomer(customer);
-        Long customerId = customer.getId();
         
-        try {
-            manager.updateCustomer(null);
-            fail();
-        } catch (IllegalArgumentException ex) {
-            //OK
-        }
+        manager.updateCustomer(null);
+            
     }
     
-    @Test
+    @Test(expected = IllegalArgumentException.class)
     public void updateCustomerWithNullId() {
 
         Customer customer = newCustomer("Jozko Mrkvicka",setDateDefault(),"0936SK25");
         manager.createCustomer(customer);
         Long customerId = customer.getId();
         
-        try {
-            customer = manager.getCustomerById(customerId);
-            customer.setId(null);
-            manager.updateCustomer(customer);        
-            fail();
-        } catch (IllegalArgumentException ex) {
-            //OK
-        }
+        customer = manager.getCustomerById(customerId);
+        customer.setId(null);
+        manager.updateCustomer(customer);        
+            
     }
     
-    @Test
+    @Test(expected = IllegalArgumentException.class)
     public void updateBarrowWithWrongId() {
         Customer customer = newCustomer("Jozko Mrkvicka",setDateDefault(),"0936SK25");
         manager.createCustomer(customer);
         Long customerId = customer.getId();
         
-        try {
-            customer = manager.getCustomerById(customerId);
-            customer.setId(customerId - 1);
-            manager.updateCustomer(customer);
-            fail();
-        } catch (IllegalArgumentException ex) {
-            //OK
-        }
+        customer = manager.getCustomerById(customerId);
+        customer.setId(customerId - 1);
+        manager.updateCustomer(customer);
+
     }
     
-    @Test
+    @Test(expected = IllegalArgumentException.class)
     public void updateBarrowWithNullName() {
         Customer customer = newCustomer("Jozko Mrkvicka",setDateDefault(),"0936SK25");
         manager.createCustomer(customer);
         Long customerId = customer.getId();
         
-        try {
-            customer = manager.getCustomerById(customerId);
-            customer.setFullName(null);
-            manager.updateCustomer(customer);
-            fail();
-        } catch (IllegalArgumentException ex) {
-            //OK
-        }
+        customer = manager.getCustomerById(customerId);
+        customer.setFullName(null);
+        manager.updateCustomer(customer);
+
+
     } 
 
-    @Test
+    @Test(expected = IllegalArgumentException.class)
     public void updateBarrowWithNullIdNumber() {
         Customer customer = newCustomer("Jozko Mrkvicka",setDateDefault(),"0936SK25");
         manager.createCustomer(customer);
         Long customerId = customer.getId();
         
-        try {
-            customer = manager.getCustomerById(customerId);
-            customer.setIdCard(null);
-            manager.updateCustomer(customer);
-            fail();
-        } catch (IllegalArgumentException ex) {
-            //OK
-        }
+        customer = manager.getCustomerById(customerId);
+        customer.setIdCard(null);
+        manager.updateCustomer(customer);
+
     }     
     
     
@@ -277,43 +244,31 @@ public class CustomerManagerImplTest {
         
     }
     
-     @Test
+     @Test(expected = IllegalArgumentException.class)
      public void deleteNullCustomer() {
 
-        try {
-            manager.deleteCustomer(null);
-            fail();
-        } catch (IllegalArgumentException ex){
-            //OK
-        }
+        manager.deleteCustomer(null);
+
      }
      
-     @Test
+     @Test(expected = IllegalArgumentException.class)
      public void deleteCustomerWithNullId() {
         Customer customer = newCustomer("Jozko Mrkvicka",setDateDefault(),"0936SK25");
         manager.createCustomer(customer);
         
-        try {
-            customer.setId(null);
-            manager.deleteCustomer(customer);
-            fail();
-        } catch (IllegalArgumentException ex){
-            //OK
-        }
+        customer.setId(null);
+        manager.deleteCustomer(customer);
+
      }
      
-     @Test
+     @Test(expected = IllegalArgumentException.class)
      public void deleteCustomerWithWrongId() {
         Customer customer = newCustomer("Jozko Mrkvicka",setDateDefault(),"0936SK25");
         manager.createCustomer(customer);
-        
-        try {
-            customer.setId(1l);
-            manager.deleteCustomer(customer);
-            fail();
-        } catch (IllegalArgumentException ex){
-            //OK
-        }
+
+        customer.setId(1l);
+        manager.deleteCustomer(customer);
+
      }
         
     
@@ -322,6 +277,7 @@ public class CustomerManagerImplTest {
         customer.setBirthDate(birthDate);
         customer.setFullName(fullName);
         customer.setIdCard(idCard);
+        
         return customer;
     }
     
@@ -340,7 +296,7 @@ public class CustomerManagerImplTest {
         assertEquals(expected.getIdCard(), actual.getIdCard());
     }
     
-    private static Comparator<Customer> idComparator = new Comparator<Customer>() {
+    private static final Comparator<Customer> idComparator = new Comparator<Customer>() {
 
         @Override
         public int compare(Customer o1, Customer o2) {
@@ -348,7 +304,7 @@ public class CustomerManagerImplTest {
         }
     };
 
-    public Date setDateDefault() {
+    private Date setDateDefault() {
         try {
             String dateInString = "22-01-1986";
             Date date = sdf.parse(dateInString);

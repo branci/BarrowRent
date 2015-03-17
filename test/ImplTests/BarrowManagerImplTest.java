@@ -8,6 +8,10 @@ package ImplTests;
 import barrowrent.Barrow;
 import barrowrent.BarrowManagerImpl;
 import java.sql.SQLException;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
@@ -36,8 +40,89 @@ public class BarrowManagerImplTest {
         assertEquals(barrow, result);
         assertNotSame(barrow, result);
         assertDeepEquals(barrow, result);
-}
-    //rozdelit na mensie?
+        
+    }
+    
+    @Test
+    public void getBarrow() {
+        assertNull(manager.getBarrowById(1L));
+        
+        Barrow barrow = newBarrow("sand", 100.1D);
+        manager.createBarrow(barrow);
+        Long barrowId = barrow.getId();
+        
+        Barrow result = manager.getBarrowById(barrowId);
+        assertEquals(barrow, result);
+        assertDeepEquals(barrow, result);
+    }
+    
+    @Test
+    public void findAllBarrows() {
+        assertTrue(manager.findAllBarrows().isEmpty());
+        
+        Barrow barrow1 = newBarrow("sand", 100.2D);
+        Barrow barrow2 = newBarrow("soil", 200D);
+        
+        manager.createBarrow(barrow1);
+        manager.createBarrow(barrow2);
+        
+        List<Barrow> expected = Arrays.asList(barrow1, barrow2);
+        List<Barrow> actual = manager.findAllBarrows();
+        
+        Collections.sort(actual, idComparator);
+        Collections.sort(expected, idComparator);
+        
+        assertEquals(expected, actual);
+        assertDeepEquals(expected, actual);
+    }
+    
+//-----------------------------------------------CREATE WRONG BARROW-----------------------------------------------------------   
+    @Test(expected = IllegalArgumentException.class)
+    public void createNullBarrow() {
+       
+        manager.createBarrow(null);
+
+    }
+     
+    @Test(expected = IllegalArgumentException.class)
+    public void createBarrowWithWrongId() {
+        
+        Barrow barrow = newBarrow("soil", 200D);
+        barrow.setId(1L);
+
+        manager.createBarrow(barrow);
+
+    }
+    
+    @Test(expected = IllegalArgumentException.class)
+    public void createBarrowWithNullUse() {
+        
+        Barrow barrow = newBarrow(null, 200D);
+
+        manager.createBarrow(barrow);
+
+    }
+     
+    @Test(expected = IllegalArgumentException.class)
+    public void createBarrowWithZeroVolume() {
+        
+        Barrow barrow = newBarrow("soil", 0D);
+
+        manager.createBarrow(barrow);
+
+    }
+    
+    @Test(expected = IllegalArgumentException.class)
+    public void createBarrowWithNegativeVolume() {
+        
+        Barrow barrow = newBarrow("soil", -1D);
+
+        manager.createBarrow(barrow);
+
+    }
+        
+//------------------------------------------------------------------------------------------------------------------------------
+ 
     @Test
     public void updateBarrow() {
         Barrow barrow = newBarrow("sand", 100.2D);
@@ -58,107 +143,85 @@ public class BarrowManagerImplTest {
         assertEquals("water", barrow.getUse());
         assertEquals(111.1, barrow.getVolumeLt(), 0.01);
         
+        /*
         barrow = manager.getBarrowById(barrowId);
         barrow.setUse(null);
         manager.updateBarrow(barrow);
         assertEquals(111.1, barrow.getVolumeLt(), 0.01);
         assertNull(barrow.getUse());
+        */
         
         // Check if updates didn't affect other records
         assertDeepEquals(barrow2, manager.getBarrowById(barrow2.getId()));
     }
 //----------------------------------------UPDATE WRONG BARROW-----------------------------------------
-    @Test
+    @Test(expected = IllegalArgumentException.class)
     public void updateBarrowWithNull() {
         Barrow barrow = newBarrow("sand", 100D);
         manager.createBarrow(barrow);
     
-        try {
-            manager.updateBarrow(null);
-            fail();
-        } catch (IllegalArgumentException ex) {
-            //OK
-        }
+        manager.updateBarrow(null);
+
     }
     
-    @Test
+    @Test(expected = IllegalArgumentException.class)
     public void updateBarrowWithNullId() {
         Barrow barrow = newBarrow("sand", 100D);
         manager.createBarrow(barrow);
         Long barrowId = barrow.getId();
     
-        try {
-            barrow = manager.getBarrowById(barrowId);
-            barrow.setId(null);
-            manager.updateBarrow(barrow);        
-            fail();
-        } catch (IllegalArgumentException ex) {
-            //OK
-        }
+        barrow = manager.getBarrowById(barrowId);
+        barrow.setId(null);
+        manager.updateBarrow(barrow);        
+
     }
     
-    @Test
+    @Test(expected = IllegalArgumentException.class)
     public void updateBarrowWithWrongId() {
         Barrow barrow = newBarrow("sand", 100D);
         manager.createBarrow(barrow);
         Long barrowId = barrow.getId();
     
-        try {
-            barrow = manager.getBarrowById(barrowId);
-            barrow.setId(barrowId - 1);
-            manager.updateBarrow(barrow);        
-            fail();      
-        } catch (IllegalArgumentException ex) {
-            //OK
-        }
+        barrow = manager.getBarrowById(barrowId);
+        barrow.setId(barrowId - 1);
+        manager.updateBarrow(barrow);           
+
     }
     
-    @Test
+    @Test(expected = IllegalArgumentException.class)
     public void updateBarrowWithNullUse() {
         Barrow barrow = newBarrow("sand", 100D);
         manager.createBarrow(barrow);
         Long barrowId = barrow.getId();
         
-        try {
-            barrow = manager.getBarrowById(barrowId);
-            barrow.setUse(null);
-            manager.updateBarrow(barrow);        
-            fail();      
-        } catch (IllegalArgumentException ex) {
-            //OK
-        }
+        barrow = manager.getBarrowById(barrowId);
+        barrow.setUse(null);
+        manager.updateBarrow(barrow);           
+
     }
     
-    @Test
+    @Test(expected = IllegalArgumentException.class)
     public void updateBarrowWithZeroVolume() {
         Barrow barrow = newBarrow("sand", 100D);
         manager.createBarrow(barrow);
         Long barrowId = barrow.getId();
         
-        try {
-            barrow = manager.getBarrowById(barrowId);
-            barrow.setVolumeLt(0D);
-            manager.updateBarrow(barrow);        
-            fail();      
-        } catch (IllegalArgumentException ex) {
-            //OK
-        }
+        barrow = manager.getBarrowById(barrowId);
+        barrow.setVolumeLt(0D);
+        manager.updateBarrow(barrow);            
+
     }
     
-    @Test
+    @Test(expected = IllegalArgumentException.class)
     public void updateBarrowWithNegativeVolume(){
         Barrow barrow = newBarrow("sand", 100D);
         manager.createBarrow(barrow);
         Long barrowId = barrow.getId();
         
-        try {
-            barrow = manager.getBarrowById(barrowId);
-            barrow.setVolumeLt(-1D);
-            manager.updateBarrow(barrow);        
-            fail();      
-        } catch (IllegalArgumentException ex) {
-            //OK
-        }
+        barrow = manager.getBarrowById(barrowId);
+        barrow.setVolumeLt(-1D);
+        manager.updateBarrow(barrow);          
+
     }
                
 //------------------------------------------------------------------------------------------------------
@@ -180,47 +243,33 @@ public class BarrowManagerImplTest {
         assertNotNull(manager.getBarrowById(barr2.getId()));
     }
 //----------------------------------DELETE WRONG BARROW-------------------------------------------------
-    //netreba ich najprv mmanager.create?
-    @Test
+    @Test(expected = IllegalArgumentException.class)
     public void deleteNullBarrow() {
         
-        try {
-            manager.deleteBarrow(null);
-            fail();
-        } catch (IllegalArgumentException ex){
-            //OK
-        }
+        manager.deleteBarrow(null);
+
     }
     
-    @Test
+    @Test(expected = IllegalArgumentException.class)
     public void deleteBarrowWithNullId() {
         Barrow barrow = newBarrow("sand", 100D);
         
-        try {
-            barrow.setId(null);
-            manager.deleteBarrow(barrow);
-            fail();
-        } catch (IllegalArgumentException ex){
-            //OK
-        }
+        barrow.setId(null);
+        manager.deleteBarrow(barrow);
+
     }
     
-    @Test
+    @Test(expected = IllegalArgumentException.class)
     public void deleteBarrowWithWrongId() {
         Barrow barrow = newBarrow("sand", 100D);
         
-        try {
-            barrow.setId(1l);
-            manager.deleteBarrow(barrow);
-            fail();
-        } catch (IllegalArgumentException ex){
-            //OK
-        }
+        barrow.setId(1l);
+        manager.deleteBarrow(barrow);
+
     }
 //------------------------------------------------------------------------------------------------------
     private Barrow newBarrow(String use, Double volumeLt) {
         Barrow barrow = new Barrow();
-        //barrow.setId(id);
         barrow.setUse(use);
         barrow.setVolumeLt(volumeLt);
         
@@ -232,5 +281,21 @@ public class BarrowManagerImplTest {
         assertEquals(expected.getUse(), actual.getUse());
         assertEquals(expected.getVolumeLt(), actual.getVolumeLt());
     }
+    
+    private void assertDeepEquals(List<Barrow> expectedList, List<Barrow> actualList) {
+        for(int i = 0; i < expectedList.size(); i++) {
+            Barrow expected = expectedList.get(i);
+            Barrow actual = actualList.get(i);
+            assertEquals(expected, actual);
+        }
+    }
+    
+    private static final Comparator<Barrow> idComparator = new Comparator<Barrow>() {
+        
+        @Override
+        public int compare(Barrow o1, Barrow o2) {
+            return Long.valueOf(o1.getId()).compareTo(Long.valueOf(o2.getId()));
+        }
+    };
     
 }

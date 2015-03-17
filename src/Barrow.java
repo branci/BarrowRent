@@ -44,5 +44,20 @@ public class Barrow {
         return "Barrow{" + id + '}';
     }
     
-    //equals? hashcode?
+    
+    //equals? hashcode? !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+    @Override
+    public boolean equals(Object obj) {
+        return super.equals(obj); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode(); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    
+    
+    
 }
