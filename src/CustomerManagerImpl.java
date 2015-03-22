@@ -20,6 +20,14 @@ import java.util.List;
  */
 public class CustomerManagerImpl implements CustomerManager {
     
+    final static Logger log = LoggerFactory.getLogger(CustomerManagerImpl.class);
+    private final DataSource dataSource;
+
+    public CustomerManagerImpl(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
+    
+    
     @Override
     public void createCustomer(Customer customer) throws ServiceFailureException {
         throw new UnsupportedOperationException("Not supported yet.");
