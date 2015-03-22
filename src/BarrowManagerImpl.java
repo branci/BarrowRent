@@ -5,13 +5,28 @@
  */
 package barrowrent;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+
+import javax.sql.DataSource;
+import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  *
- * @author Branislav Smik <xsmik @fi.muni>
+ * @author Branislav Smik <xsmik @fi.muni>, Marek Perichta
  */
 public class BarrowManagerImpl implements BarrowManager {
+
+    final static Logger log = LoggerFactory.getLogger(BarrowManagerImpl.class);
+    private final DataSource dataSource;
+
+    public BarrowManagerImpl(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
+
 
     @Override
     public void createBarrow(Barrow barrow) throws ServiceFailureException {
