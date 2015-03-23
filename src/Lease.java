@@ -14,8 +14,8 @@ import java.util.Date;
  */
 public class Lease {
     private Long id;
-    private Customer customer;
-    private Barrow barrow;
+    private Long customerId;
+    private Long barrowId;
     private BigDecimal price;
     private Date realEndTime;
     private Date startTime;
@@ -29,20 +29,20 @@ public class Lease {
         return id;
     }
     
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
+    public void setCustomerId(Long customerId) {
+        this.customerId = customerId;
     }
-    
-    public Customer getCustomer() {
-        return customer;
+
+    public Long getCustomerId() {
+        return customerId;
     }
-    
-    public void setBarrow(Barrow barrow) {
-        this.barrow = barrow;
+
+    public void setBarrowId(Long barrowId) {
+     this.barrowId = barrowId;
     }
-    
-    public Barrow getBarrow() {
-        return barrow;
+
+    public Long getBarrowId() {
+        return barrowId;
     }
     
     public void setPrice(BigDecimal price) {
