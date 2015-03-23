@@ -29,10 +29,10 @@ public interface CustomerManager {
     
     /**
      *
-     * @param customer
+     * @param customerId
      * @throws ServiceFailureException
      */
-    void deleteCustomer(Customer customer) throws ServiceFailureException;
+    void deleteCustomer(Long customerId) throws ServiceFailureException;
     
     /**
      *

@@ -5,18 +5,23 @@
  */
 package barrowrent;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
-import javax.sql.DataSource;
-import java.sql.*;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
+import javax.sql.DataSource;
 
 /**
  *
- * @author Branislav Smik <xsmik @fi.muni>, Marek Perichta
+ * @author Branislav Smik <xsmik @fi.muni>
+ * @author Marek Perichta
  */
 public class CustomerManagerImpl implements CustomerManager {
     
@@ -26,7 +31,6 @@ public class CustomerManagerImpl implements CustomerManager {
     public CustomerManagerImpl(DataSource dataSource) {
         this.dataSource = dataSource;
     }
-    
     
     @Override
     public void createCustomer(Customer customer) throws ServiceFailureException {
@@ -103,5 +107,4 @@ public class CustomerManagerImpl implements CustomerManager {
         customer.setIdCard(rs.getString("idCard"));
         return customer;
     }
-    
 }

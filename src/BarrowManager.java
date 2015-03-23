@@ -29,10 +29,10 @@ public interface BarrowManager {
     
     /**
      *
-     * @param barrow
+     * @param barrowId
      * @throws ServiceFailureException
      */
-    void deleteBarrow(Barrow barrow) throws ServiceFailureException;
+    void deleteBarrow(Long barrowId) throws ServiceFailureException;
     
     /**
      *
