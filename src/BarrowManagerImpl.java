@@ -39,7 +39,7 @@ public class BarrowManagerImpl implements BarrowManager {
     }
     
     @Override
-    public void deleteBarrow(long barrowId) throws ServiceFailureException {
+    public void deleteBarrow(Long barrowId) throws ServiceFailureException {
         try (Connection conn = dataSource.getConnection()) {
             try (PreparedStatement st = conn.prepareStatement("DELETE FROM barrow WHERE id=?")) {
                 st.setLong(1, barrowId);
