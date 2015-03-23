@@ -237,7 +237,7 @@ public class CustomerManagerImplTest {
         assertNotNull(manager.getCustomerById(c1.getId()));
         assertNotNull(manager.getCustomerById(c2.getId()));
 
-        manager.deleteCustomer(c1);
+        manager.deleteCustomer(c1.getId());
         
         assertNull(manager.getCustomerById(c1.getId()));
         assertNotNull(manager.getCustomerById(c2.getId())); 
@@ -251,15 +251,6 @@ public class CustomerManagerImplTest {
 
      }
      
-     @Test(expected = IllegalArgumentException.class)
-     public void deleteCustomerWithNullId() {
-        Customer customer = newCustomer("Jozko Mrkvicka",setDateDefault(),"0936SK25");
-        manager.createCustomer(customer);
-        
-        customer.setId(null);
-        manager.deleteCustomer(customer);
-
-     }
      
      @Test(expected = IllegalArgumentException.class)
      public void deleteCustomerWithWrongId() {
@@ -267,7 +258,7 @@ public class CustomerManagerImplTest {
         manager.createCustomer(customer);
 
         customer.setId(1l);
-        manager.deleteCustomer(customer);
+        manager.deleteCustomer(2l);
 
      }
         
