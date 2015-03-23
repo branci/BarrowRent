@@ -75,6 +75,7 @@ public class LeaseManagerImpl implements LeaseManager {
     }
             
     
+    //Prerobena metoda z Customer customer na Long customerId
     @Override
     public List<Lease> findLeasesForCustomer(Long customerId) throws ServiceFailureException {
         log.debug("finding all leases for customer");
@@ -95,6 +96,7 @@ public class LeaseManagerImpl implements LeaseManager {
         }
     }
     
+    //Prerobena metoda z Barrow barrow na Long barrowId
     @Override
     public List<Lease> findLeasesForBarrow(Long barrowId) throws ServiceFailureException {
                 log.debug("finding all leases for barrow");
