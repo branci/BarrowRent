@@ -39,7 +39,7 @@ public class CustomerManagerImpl implements CustomerManager {
     }
     
     @Override
-    public void deleteCustomer(long customerId) throws ServiceFailureException {
+    public void deleteCustomer(Long customerId) throws ServiceFailureException {
         try (Connection conn = dataSource.getConnection()) {
             try (PreparedStatement st = conn.prepareStatement("DELETE FROM barrow WHERE id=?")) {
                 st.setLong(1, customerId);
