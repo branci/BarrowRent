@@ -29,10 +29,10 @@ public interface LeaseManager {
     
     /**
      *
-     * @param lease
+     * @param leaseId 
      * @throws ServiceFailureException
      */
-    void deleteLease(Lease lease) throws ServiceFailureException;
+    void deleteLease(Long leaseId) throws ServiceFailureException;
     
     /**
      *
@@ -43,19 +43,19 @@ public interface LeaseManager {
     
     /**
      *
-     * @param customer
+     * @param customerId
      * @return
      * @throws ServiceFailureException
      */
-    List<Lease> findLeasesForCustomer(Customer customer) throws ServiceFailureException;
+    List<Lease> findLeasesForCustomer(Long customerId) throws ServiceFailureException;
     
     /**
      *
-     * @param barrow
+     * @param barrowId
      * @return
      * @throws ServiceFailureException
      */
-    List<Lease> findLeasesForBarrow(Barrow barrow) throws ServiceFailureException;
+    List<Lease> findLeasesForBarrow(Long barrowId) throws ServiceFailureException;
     
     /**
      *
