@@ -20,7 +20,7 @@ import javax.sql.DataSource;
 
 
 
-// Mam prerobene aj test pre LeaseManagerImpl prerobene koli zmene atributov Leas-u. Zajtra nahodim
+// Mam prerobeny aj test pre LeaseManagerImpl koli zmene atributov Leas-u. Zajtra nahodim
 
 
 
