@@ -237,7 +237,7 @@ public class BarrowManagerImplTest {
         assertNotNull(manager.getBarrowById(barr1.getId()));
         assertNotNull(manager.getBarrowById(barr2.getId()));
         
-        manager.deleteBarrow(barr1);
+        manager.deleteBarrow(barr1.getId());
         
         assertNull(manager.getBarrowById(barr1.getId()));
         assertNotNull(manager.getBarrowById(barr2.getId()));
@@ -255,7 +255,7 @@ public class BarrowManagerImplTest {
         Barrow barrow = newBarrow("sand", 100D);
         
         barrow.setId(null);
-        manager.deleteBarrow(barrow);
+        manager.deleteBarrow(barrow.getId());
 
     }
     
@@ -264,7 +264,7 @@ public class BarrowManagerImplTest {
         Barrow barrow = newBarrow("sand", 100D);
         
         barrow.setId(1l);
-        manager.deleteBarrow(barrow);
+        manager.deleteBarrow(barrow.getId());
 
     }
 //------------------------------------------------------------------------------------------------------
