@@ -16,16 +16,6 @@ import java.util.List;
 import java.util.logging.Logger;
 import javax.sql.DataSource;
 
-
-
-
-
-// Mam prerobeny aj test pre LeaseManagerImpl koli zmene atributov Leas-u. Zajtra nahodim
-
-
-
-
-
 /**
  *
  * @author Branislav Smik <xsmik @fi.muni>
