@@ -85,6 +85,7 @@ public class CustomerManagerImpl implements CustomerManager {
                         + "retriving failed when trying to insert customer " + customer
                         + " - more keys found");
             }
+            return result;
         } else {
             throw new ServiceFailureException("Internal Error: Generated key "
                     + "retriving failed when trying to insert customer " + customer
