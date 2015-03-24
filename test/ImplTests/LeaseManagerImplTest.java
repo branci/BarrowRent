@@ -42,10 +42,8 @@ public class LeaseManagerImplTest {
 
     @Test
     public void createLease() {
-        Barrow barrow = newBarrow("sand", 100D);
-        Customer customer = newCustomer("Jozko Mrkvicka", setDate("22-01-1986"), "0976SK25");
         BigDecimal price = new BigDecimal("1000.99");
-        Lease lease = newLease(customer, barrow, price, setDate("22-08-2015"), setDate("22-08-2015"), setDate("22-08-2015"));
+        Lease lease = newLease(1l, 5l, price, setDate("22-08-2015"), setDate("22-08-2015"), setDate("22-08-2015"));
 
         manager.createLease(lease);
 
@@ -61,10 +59,8 @@ public class LeaseManagerImplTest {
     public void getLease() {
         assertNull(manager.getLeaseById(1L));
 
-        Barrow barrow = newBarrow("sand", 100D);
-        Customer customer = newCustomer("Jozko Mrkvicka", setDate("22-01-1986"), "0976SK25");
         BigDecimal price = new BigDecimal("1000.99");
-        Lease lease = newLease(customer, barrow, price, setDate("22-08-2015"), setDate("22-08-2015"), setDate("22-08-2015"));
+        Lease lease = newLease(1l, 4l, price, setDate("22-08-2015"), setDate("22-08-2015"), setDate("22-08-2015"));
 
         manager.createLease(lease);
         Long leaseId = lease.getId();
@@ -73,421 +69,399 @@ public class LeaseManagerImplTest {
         assertEquals(lease, result);
         assertDeepEquals(lease, result);
     }
-    
+
 //----------------------------------------UPDATE GOOD LEASE----------------------------------------------------------    
     @Test
     public void updateLeaseBarrow() {
+
+        /*
         Customer customer1 = newCustomer("John Kviatkowsky", setDate("22-01-1986"), "0976SK41");
         Customer customer2 = newCustomer("Jozo Petrik", setDate("20-04-1991"), "0936SK00"); 
         Barrow barrow1 = newBarrow("sand", 100D);
         Barrow barrow2 = newBarrow("soil", 200D);
         Barrow barrow3 = newBarrow("concrete", 150D);
-
-        Lease lease1 = newLease(customer1, barrow1, new BigDecimal(1.0), 
-                setDate("22-01-1983"), setDate("22-01-1981"), setDate("22-01-1982"));
-        Lease lease2 = newLease(customer1, barrow2, new BigDecimal(1.0), 
-                setDate("22-01-1985"), setDate("22-01-1981"), setDate("22-01-1982"));
         
+        Lease lease1 = newLease(customer1, barrow1, new BigDecimal(1.0), 
+        setDate("22-01-1983"), setDate("22-01-1981"), setDate("22-01-1982"));
+        Lease lease2 = newLease(customer1, barrow2, new BigDecimal(1.0), 
+        setDate("22-01-1985"), setDate("22-01-1981"), setDate("22-01-1982"));
+         */
+
+        Lease lease1 = newLease(1l, 1l, new BigDecimal(1.0),
+                setDate("22-01-1983"), setDate("22-01-1981"), setDate("22-01-1982"));
+        Lease lease2 = newLease(1l, 2l, new BigDecimal(1.0),
+                setDate("22-01-1985"), setDate("22-01-1981"), setDate("22-01-1982"));
+
         manager.createLease(lease1);
         manager.createLease(lease2);
         Long leaseId = lease1.getId();
-        
+
+
         lease1 = manager.getLeaseById(leaseId);
-        lease1.setBarrow(barrow3);
+        lease1.setBarrowId(3l);
         manager.updateLease(lease1);
-        assertEquals(barrow3, lease1.getBarrow());
-        assertEquals(customer1, lease1.getCustomer());
+
+        //WTF
+        assertEquals((Long)3L, lease1.getBarrowId());
+        assertEquals((Long)1l, lease1.getCustomerId());
         assertEquals(new BigDecimal(1.0), lease1.getPrice());
         assertEquals(setDate("22-01-1983"), lease1.getRealEndTime());
         assertEquals(setDate("22-01-1981"), lease1.getStartTime());
         assertEquals(setDate("22-01-1982"), lease1.getExpectedEndTime());
-        
+
         // Check if updates didn't affect other records
-        assertDeepEquals(lease2, manager.getLeaseById(lease2.getId()));  
+        assertDeepEquals(lease2, manager.getLeaseById(lease2.getId()));
     }
-    
+
     @Test
     public void updateLeaseCustomer() {
+        /*
         Customer customer1 = newCustomer("John Kviatkowsky", setDate("22-01-1986"), "0976SK41");
         Customer customer2 = newCustomer("Jozo Petrik", setDate("20-04-1991"), "0936SK00");
         Customer customer3 = newCustomer("Brano Mojsej", setDate("20-04-1977"),"0936SK32");     
         Barrow barrow1 = newBarrow("sand", 100D);
         Barrow barrow2 = newBarrow("soil", 200D);
-
-        Lease lease1 = newLease(customer1, barrow1, new BigDecimal(1.0), 
+         */
+        Lease lease1 = newLease(1l, 1l, new BigDecimal(1.0),
                 setDate("22-01-1983"), setDate("22-01-1981"), setDate("22-01-1982"));
-        Lease lease2 = newLease(customer1, barrow2, new BigDecimal(1.0), 
+        Lease lease2 = newLease(1l, 2l, new BigDecimal(1.0),
                 setDate("22-01-1985"), setDate("22-01-1981"), setDate("22-01-1982"));
-        
+
         manager.createLease(lease1);
         manager.createLease(lease2);
         Long leaseId = lease1.getId();
-        
+
         lease1 = manager.getLeaseById(leaseId);
-        lease1.setCustomer(customer3);
+        lease1.setCustomerId(3l);
         manager.updateLease(lease1);
-        assertEquals(barrow1, lease1.getBarrow());
-        assertEquals(customer3, lease1.getCustomer());
+        assertEquals((Long)1l, lease1.getBarrowId());
+        assertEquals((Long)3l, lease1.getCustomerId());
         assertEquals(new BigDecimal(1.0), lease1.getPrice());
         assertEquals(setDate("22-01-1983"), lease1.getRealEndTime());
         assertEquals(setDate("22-01-1981"), lease1.getStartTime());
         assertEquals(setDate("22-01-1982"), lease1.getExpectedEndTime());
-        
+
         // Check if updates didn't affect other records
-        assertDeepEquals(lease2, manager.getLeaseById(lease2.getId()));  
+        assertDeepEquals(lease2, manager.getLeaseById(lease2.getId()));
     }
-    
+
     @Test
     public void updateLeasePrice() {
+
+        /*
         Customer customer1 = newCustomer("John Kviatkowsky", setDate("22-01-1986"), "0976SK41");
         Customer customer2 = newCustomer("Jozo Petrik", setDate("20-04-1991"), "0936SK00");
         Barrow barrow1 = newBarrow("sand", 100D);
         Barrow barrow2 = newBarrow("soil", 200D);
-
-        Lease lease1 = newLease(customer1, barrow1, new BigDecimal(1.0), 
+         */
+        Lease lease1 = newLease(1l, 1l, new BigDecimal(1.0),
                 setDate("22-01-1983"), setDate("22-01-1981"), setDate("22-01-1982"));
-        Lease lease2 = newLease(customer1, barrow2, new BigDecimal(2.0), 
+        Lease lease2 = newLease(1l, 2l, new BigDecimal(2.0),
                 setDate("22-01-1985"), setDate("22-01-1981"), setDate("22-01-1982"));
-        
+
         manager.createLease(lease1);
         manager.createLease(lease2);
         Long leaseId = lease1.getId();
-        
+
         lease1 = manager.getLeaseById(leaseId);
         lease1.setPrice(new BigDecimal(12.34));
         manager.updateLease(lease1);
-        assertEquals(barrow1, lease1.getBarrow());
-        assertEquals(customer1, lease1.getCustomer());
+        assertEquals((Long)1l, lease1.getBarrowId());
+        assertEquals((Long)1l, lease1.getCustomerId());
         assertEquals(new BigDecimal(12.34), lease1.getPrice());
         assertEquals(setDate("22-01-1983"), lease1.getRealEndTime());
         assertEquals(setDate("22-01-1981"), lease1.getStartTime());
         assertEquals(setDate("22-01-1982"), lease1.getExpectedEndTime());
-        
+
         // Check if updates didn't affect other records
-        assertDeepEquals(lease2, manager.getLeaseById(lease2.getId()));  
+        assertDeepEquals(lease2, manager.getLeaseById(lease2.getId()));
     }
-    
+
     @Test
     public void updateLeaseRealEndTime() {
+        /*   
         Customer customer1 = newCustomer("John Kviatkowsky", setDate("22-01-1986"), "0976SK41");
         Customer customer2 = newCustomer("Jozo Petrik", setDate("20-04-1991"), "0936SK00");  
         Barrow barrow1 = newBarrow("sand", 100D);
         Barrow barrow2 = newBarrow("soil", 200D);
+         */
 
-        Lease lease1 = newLease(customer1, barrow1, new BigDecimal(1.0), 
+        Lease lease1 = newLease(1l, 1l, new BigDecimal(1.0),
                 setDate("22-01-1983"), setDate("22-01-1981"), setDate("22-01-1982"));
-        Lease lease2 = newLease(customer1, barrow2, new BigDecimal(1.0), 
+        Lease lease2 = newLease(1l, 2l, new BigDecimal(1.0),
                 setDate("22-01-1985"), setDate("22-01-1981"), setDate("22-01-1982"));
-        
+
         manager.createLease(lease1);
         manager.createLease(lease2);
         Long leaseId = lease1.getId();
-        
+
         lease1 = manager.getLeaseById(leaseId);
         lease1.setRealEndTime(setDate("25-01-1983"));
         manager.updateLease(lease1);
-        assertEquals(barrow1, lease1.getBarrow());
-        assertEquals(customer1, lease1.getCustomer());
+        assertEquals((Long)1l, lease1.getBarrowId());
+        assertEquals((Long)1l, lease1.getCustomerId());
         assertEquals(new BigDecimal(1.0), lease1.getPrice());
         assertEquals(setDate("25-01-1983"), lease1.getRealEndTime()); //25 is different
         assertEquals(setDate("22-01-1981"), lease1.getStartTime());
         assertEquals(setDate("22-01-1982"), lease1.getExpectedEndTime());
-        
+
         // Check if updates didn't affect other records
-        assertDeepEquals(lease2, manager.getLeaseById(lease2.getId()));  
+        assertDeepEquals(lease2, manager.getLeaseById(lease2.getId()));
     }
-    
+
     @Test
     public void updateLeaseStartTime() {
+        /*    
         Customer customer1 = newCustomer("John Kviatkowsky", setDate("22-01-1986"), "0976SK41");
         Customer customer2 = newCustomer("Jozo Petrik", setDate("20-04-1991"), "0936SK00");    
         Barrow barrow1 = newBarrow("sand", 100D);
         Barrow barrow2 = newBarrow("soil", 200D);
+         */
 
-        Lease lease1 = newLease(customer1, barrow1, new BigDecimal(1.0), 
+        Lease lease1 = newLease(1l, 1l, new BigDecimal(1.0),
                 setDate("22-01-1983"), setDate("22-01-1981"), setDate("22-01-1982"));
-        Lease lease2 = newLease(customer1, barrow2, new BigDecimal(1.0), 
+        Lease lease2 = newLease(1l, 2l, new BigDecimal(1.0),
                 setDate("22-01-1985"), setDate("22-01-1981"), setDate("22-01-1982"));
-        
+
         manager.createLease(lease1);
         manager.createLease(lease2);
         Long leaseId = lease1.getId();
-        
+
         lease1 = manager.getLeaseById(leaseId);
         lease1.setStartTime(setDate("25-01-1983"));
         manager.updateLease(lease1);
-        assertEquals(barrow1, lease1.getBarrow());
-        assertEquals(customer1, lease1.getCustomer());
+        assertEquals((Long)1l, lease1.getBarrowId());
+        assertEquals((Long)1l, lease1.getCustomerId());
         assertEquals(new BigDecimal(1.0), lease1.getPrice());
         assertEquals(setDate("22-01-1983"), lease1.getRealEndTime());
         assertEquals(setDate("25-01-1983"), lease1.getStartTime());     //25 is different
         assertEquals(setDate("22-01-1982"), lease1.getExpectedEndTime());
-        
+
         // Check if updates didn't affect other records
-        assertDeepEquals(lease2, manager.getLeaseById(lease2.getId()));  
+        assertDeepEquals(lease2, manager.getLeaseById(lease2.getId()));
     }
-    
-       @Test
+
+    @Test
     public void updateExpectedEndTime() {
+
+        /*       
         Customer customer1 = newCustomer("John Kviatkowsky", setDate("22-01-1986"), "0976SK41");
         Customer customer2 = newCustomer("Jozo Petrik", setDate("20-04-1991"), "0936SK00");
         Barrow barrow1 = newBarrow("sand", 100D);
         Barrow barrow2 = newBarrow("soil", 200D);
+         */
 
-        Lease lease1 = newLease(customer1, barrow1, new BigDecimal(1.0), 
+        Lease lease1 = newLease(1l, 1l, new BigDecimal(1.0),
                 setDate("22-01-1983"), setDate("22-01-1981"), setDate("22-01-1982"));
-        Lease lease2 = newLease(customer1, barrow2, new BigDecimal(1.0), 
+        Lease lease2 = newLease(1l, 2l, new BigDecimal(1.0),
                 setDate("22-01-1985"), setDate("22-01-1981"), setDate("22-01-1982"));
-        
+
         manager.createLease(lease1);
         manager.createLease(lease2);
         Long leaseId = lease1.getId();
-        
+
         lease1 = manager.getLeaseById(leaseId);
         lease1.setExpectedEndTime(setDate("25-01-1983"));
         manager.updateLease(lease1);
-        assertEquals(barrow1, lease1.getBarrow());
-        assertEquals(customer1, lease1.getCustomer());
+        assertEquals((Long)1l, lease1.getBarrowId());
+        assertEquals((Long)1l, lease1.getCustomerId());
         assertEquals(new BigDecimal(1.0), lease1.getPrice());
         assertEquals(setDate("22-01-1983"), lease1.getRealEndTime());
-        assertEquals(setDate("22-01-1981"), lease1.getStartTime());     
+        assertEquals(setDate("22-01-1981"), lease1.getStartTime());
         assertEquals(setDate("25-01-1983"), lease1.getExpectedEndTime()); //25 is different
-        
+
         // Check if updates didn't affect other records
-        assertDeepEquals(lease2, manager.getLeaseById(lease2.getId()));  
+        assertDeepEquals(lease2, manager.getLeaseById(lease2.getId()));
     }
 //---------------------------------------------------------------------------------------------------    
 
     @Test
     public void deleteLease() {
+
+        /*    
         Customer customer1 = newCustomer("John Kviatkowsky", setDate("22-01-1986"), "0976SK41");
         Customer customer2 = newCustomer("Jozo Petrik", setDate("20-04-1991"), "0936SK00");
         Barrow barrow1 = newBarrow("sand", 100D);
         Barrow barrow2 = newBarrow("soil", 200D);
+         */
 
-        Lease lease1 = newLease(customer1, barrow1, new BigDecimal(1.0), 
+        Lease lease1 = newLease(1l, 1l, new BigDecimal(1.0),
                 setDate("22-01-1983"), setDate("22-01-1981"), setDate("22-01-1982"));
-        Lease lease2 = newLease(customer1, barrow2, new BigDecimal(1.0), 
+        Lease lease2 = newLease(1l, 2l, new BigDecimal(1.0),
                 setDate("22-01-1985"), setDate("22-01-1981"), setDate("22-01-1982"));
-        
+
         manager.createLease(lease1);
         manager.createLease(lease2);
-        
+
         assertNotNull(manager.getLeaseById(lease1.getId()));
         assertNotNull(manager.getLeaseById(lease2.getId()));
-       
-        manager.deleteLease(lease1);
-        
+
+        manager.deleteLease(lease1.getId());
+
         assertNull(manager.getLeaseById(lease1.getId()));
         assertNotNull(manager.getLeaseById(lease2.getId()));
     }
 //----------------------------------------------DELETE WRONG LEASE-----------------------------------------    
+
     @Test(expected = IllegalArgumentException.class)
     public void deleteNullLease() {
-        
         manager.deleteLease(null);
+    }
 
-    } 
-    
-    @Test(expected = IllegalArgumentException.class)
-    public void deleteLeaseWithNullId() {
-        Barrow barrow = newBarrow("sand", 100D);
-        Customer customer = newCustomer("Jozko Mrkvicka", setDate("22-01-1986"), "0976SK25");
-        Lease lease = newLease(customer, barrow, new BigDecimal("1000.99"), 
-                setDate("22-08-2018"), setDate("22-08-2015"), setDate("22-08-2016"));
-        
-        lease.setId(null);
-        manager.deleteLease(lease);
 
-    }       
-    
     @Test(expected = IllegalArgumentException.class)
     public void deleteLeaseWithWrongId() {
+    /*
         Barrow barrow = newBarrow("sand", 100D);
         Customer customer = newCustomer("Jozko Mrkvicka", setDate("22-01-1986"), "0976SK25");
-        Lease lease = newLease(customer, barrow, new BigDecimal("1000.99"), 
+    */  
+        Lease lease = newLease(1l, 1l, new BigDecimal("1000.99"),
                 setDate("22-08-2018"), setDate("22-08-2015"), setDate("22-08-2016"));
-        
         lease.setId(1L);
-        manager.deleteLease(lease);
-
-    } 
-    
+        manager.deleteLease(2L);
+    }
 //----------------------------------CREATE WRONG LEASE-----------------------------------------------------
     @Test(expected = IllegalArgumentException.class)
     public void createNullLease() {
-        
         manager.createLease(null);
-
     }
-    
+
     @Test(expected = IllegalArgumentException.class)
     public void createLeaseWithWrongId() {
+    /*    
         Barrow barrow = newBarrow("sand", 100D);
         Customer customer = newCustomer("Jozko Mrkvicka", setDate("22-01-1986"), "0976SK25");
-        Lease lease = newLease(customer, barrow, new BigDecimal("1000.99"), 
+    */   
+        Lease lease = newLease(1l, 1l, new BigDecimal("1000.99"),
                 setDate("22-08-2018"), setDate("22-08-2015"), setDate("22-08-2016"));
-        
         lease.setId(1L);
-        
         manager.createLease(lease);
-
     }
-    
+
     @Test(expected = IllegalArgumentException.class)
     public void createLeaseWithZeroPrice() {
+    /*    
         Barrow barrow = newBarrow("sand", 100D);
         Customer customer = newCustomer("Jozko Mrkvicka", setDate("22-01-1986"), "0976SK25");
-        Lease lease = newLease(customer, barrow, new BigDecimal("0"), 
+    */  
+        Lease lease = newLease(1l, 1l, new BigDecimal("0"),
                 setDate("22-08-2018"), setDate("22-08-2015"), setDate("22-08-2016"));
-        
         manager.createLease(lease);
-
     }
-    
+
     @Test(expected = IllegalArgumentException.class)
     public void createLeaseWithNegativePrice() {
+    /*    
         Barrow barrow = newBarrow("sand", 100D);
         Customer customer = newCustomer("Jozko Mrkvicka", setDate("22-01-1986"), "0976SK25");
-        Lease lease = newLease(customer, barrow, new BigDecimal("-1"), 
+    */  
+        Lease lease = newLease(1l, 1l, new BigDecimal("-1"),
                 setDate("22-08-2018"), setDate("22-08-2015"), setDate("22-08-2016"));
-        
         manager.createLease(lease);
-            
     }
-    
-
-    //tests if startTime isn't after expectedReturnTime
+//tests if startTime isn't after expectedReturnTime
     @Test(expected = IllegalArgumentException.class)
     public void createLeaseWithWrongExpectedTime() {
+    /*    
         Barrow barrow = newBarrow("sand", 100D);
         Customer customer = newCustomer("Jozko Mrkvicka", setDate("22-01-1986"), "0976SK25");
-        Lease lease = newLease(customer, barrow, new BigDecimal("100"), 
+    */  
+        Lease lease = newLease(1l, 1l, new BigDecimal("100"),
                 setDate("22-08-2016"), setDate("22-08-2015"), setDate("22-08-2014"));
-        
         manager.createLease(lease);
-
     }
-    
-    //tests if startTime isn't after realEndTime
+//tests if startTime isn't after realEndTime
     @Test(expected = IllegalArgumentException.class)
     public void createLeaseWithWrongRealTime() {
+    /*    
         Barrow barrow = newBarrow("sand", 100D);
         Customer customer = newCustomer("Jozko Mrkvicka", setDate("22-01-1986"), "0976SK25");
-        Lease lease = newLease(customer, barrow, new BigDecimal("100"), 
+    */   
+        Lease lease = newLease(1l, 1l, new BigDecimal("100"),
                 setDate("22-08-2014"), setDate("22-08-2015"), setDate("22-08-2016"));
-        
         manager.createLease(lease);
-
     }
-    
 //---------------------------------------------------------------------------------------------------------
-    
-    
-            
 //-----MAREK
-     @Test
+    @Test
     public void getAllLeasesForCustomer() {
-        
-
-        Customer c1 = newCustomer("John Kviatkowsky",setDate("22-01-1986"),"0976SK41");
-        Customer c2 = newCustomer("Jozo Petrik",setDate("20-04-1991"),"0936SK00");
-        
-        assertTrue(manager.findLeasesForCustomer(c1).isEmpty());
-                
+    /*
+        Customer c1 = newCustomer("John Kviatkowsky", setDate("22-01-1986"), "0976SK41");
+        Customer c2 = newCustomer("Jozo Petrik", setDate("20-04-1991"), "0936SK00");
         Barrow b1 = newBarrow("sand", 100D);
         Barrow b2 = newBarrow("soil", 200D);
         Barrow b3 = newBarrow("concrete", 150D);
-        Lease l1 = newLease(c1,b1, new BigDecimal(1.0), setDate("22-01-1983"),setDate("22-01-1981"),setDate("22-01-1982"));
-        Lease l2 = newLease(c1,b2, new BigDecimal(1.0), setDate("22-01-1985"),setDate("22-01-1981"),setDate("22-01-1982"));
-        Lease l3 = newLease(c2,b3, new BigDecimal(1.0), setDate("22-01-1984"),setDate("22-01-1982"),setDate("22-01-1983"));
-        
+    */
+        assertTrue(manager.findLeasesForCustomer(1l).isEmpty());
+        Lease l1 = newLease(1l, 1l, new BigDecimal(1.0), setDate("22-01-1983"), setDate("22-01-1981"), setDate("22-01-1982"));
+        Lease l2 = newLease(1l, 2l, new BigDecimal(1.0), setDate("22-01-1985"), setDate("22-01-1981"), setDate("22-01-1982"));
+        Lease l3 = newLease(2l, 3l, new BigDecimal(1.0), setDate("22-01-1984"), setDate("22-01-1982"), setDate("22-01-1983"));
         manager.createLease(l1);
         manager.createLease(l2);
         manager.createLease(l3);
-        
-        List<Lease> expected = Arrays.asList(l1,l2);
-        List<Lease> actual = manager.findLeasesForCustomer(c1);
-        
+        List<Lease> expected = Arrays.asList(l1, l2);
+        List<Lease> actual = manager.findLeasesForCustomer(1l);
         assertEquals(expected, actual);
         assertDeepEquals(expected, actual);
-        
     }
-    
-    
+
     @Test
     public void getAllLeasesForBarrow() {
-        
-        
-        Customer c1 = newCustomer("John Kviatkowsky",setDate("22-01-1986"),"0976SK41");
-        Customer c2 = newCustomer("Jozo Petrik",setDate("20-04-1991"),"0936SK00");
-        Customer c3 = newCustomer("Brano Mojsej",setDate("20-04-1977"),"0936SK32");
+    /*    
+        Customer c1 = newCustomer("John Kviatkowsky", setDate("22-01-1986"), "0976SK41");
+        Customer c2 = newCustomer("Jozo Petrik", setDate("20-04-1991"), "0936SK00");
+        Customer c3 = newCustomer("Brano Mojsej", setDate("20-04-1977"), "0936SK32");
         Barrow b1 = newBarrow("sand", 100D);
         Barrow b2 = newBarrow("concrete", 150D);
-        
-        assertTrue(manager.findLeasesForBarrow(b1).isEmpty());
-        
-        Lease l1 = newLease(c1,b1, new BigDecimal(1.0), setDate("22-01-1983"),setDate("22-01-1981"),setDate("22-01-1982"));
-        Lease l2 = newLease(c2,b1, new BigDecimal(1.0), setDate("22-01-1985"),setDate("22-01-1981"),setDate("22-01-1982"));
-        Lease l3 = newLease(c3,b2, new BigDecimal(1.0), setDate("22-01-1984"),setDate("22-01-1980"),setDate("22-01-1983"));
-        
+    */  
+        assertTrue(manager.findLeasesForBarrow(1l).isEmpty());
+        Lease l1 = newLease(1l, 1l, new BigDecimal(1.0), setDate("22-01-1983"), setDate("22-01-1981"), setDate("22-01-1982"));
+        Lease l2 = newLease(2l, 1l, new BigDecimal(1.0), setDate("22-01-1985"), setDate("22-01-1981"), setDate("22-01-1982"));
+        Lease l3 = newLease(3l, 2l, new BigDecimal(1.0), setDate("22-01-1984"), setDate("22-01-1980"), setDate("22-01-1983"));
         manager.createLease(l1);
         manager.createLease(l2);
         manager.createLease(l3);
-        
         List<Lease> expected = Arrays.asList(l1, l2);
-        List<Lease> actual = manager.findLeasesForBarrow(b1);
-        
+        List<Lease> actual = manager.findLeasesForBarrow(1l);
         assertEquals(expected, actual);
         assertDeepEquals(expected, actual);
-        
     }
-    
+
     @Test
     public void getAllLeases() {
-        
-        
-        Customer c1 = newCustomer("John Kviatkowsky",setDate("22-01-1986"),"0976SK41");
-        Customer c2 = newCustomer("Jozo Petrik",setDate("20-04-1991"),"0936SK00");
+    /*    
+        Customer c1 = newCustomer("John Kviatkowsky", setDate("22-01-1986"), "0976SK41");
+        Customer c2 = newCustomer("Jozo Petrik", setDate("20-04-1991"), "0936SK00");
         Barrow b1 = newBarrow("sand", 100D);
-        
-        assertTrue(manager.findLeasesForCustomer(c1).isEmpty());
-        
-        Lease l1 = newLease(c1,b1, new BigDecimal(1.0), setDate("22-01-1983"),setDate("22-01-1981"),setDate("22-01-1982"));
-        Lease l2 = newLease(c2,b1, new BigDecimal(1.0), setDate("22-01-1985"),setDate("22-01-1981"),setDate("22-01-1982"));
-        
+    */  
+        assertTrue(manager.findLeasesForCustomer(1l).isEmpty());
+        Lease l1 = newLease(1l, 1l, new BigDecimal(1.0), setDate("22-01-1983"), setDate("22-01-1981"), setDate("22-01-1982"));
+        Lease l2 = newLease(2l, 1l, new BigDecimal(1.0), setDate("22-01-1985"), setDate("22-01-1981"), setDate("22-01-1982"));
         manager.createLease(l1);
         manager.createLease(l2);
-        
         List<Lease> expected = Arrays.asList(l1, l2);
         List<Lease> actual = manager.findAllLeases();
-        
         assertEquals(expected, actual);
         assertDeepEquals(expected, actual);
-        
     }
-
 //-----MAREK koniec
-    
-//    ----------------------------------------------------------------------------------------------------------------
-
-    private static Lease newLease(Customer customer, Barrow barrow, BigDecimal price,
+// ----------------------------------------------------------------------------------------------------------------
+    private static Lease newLease(Long customerId, Long barrowId, BigDecimal price,
             Date realEndTime, Date startTime, Date expectedEndTime) {
         Lease lease = new Lease();
+        lease.setCustomerId(customerId);
+        lease.setBarrowId(barrowId);
         lease.setPrice(price);
         lease.setRealEndTime(realEndTime);
         lease.setExpectedEndTime(expectedEndTime);
         lease.setStartTime(startTime);
-
         return lease;
-
     }
-
+/*
     private Barrow newBarrow(String use, Double volumeLt) {
         Barrow barrow = new Barrow();
         barrow.setUse(use);
         barrow.setVolumeLt(volumeLt);
-
         return barrow;
     }
 
@@ -496,21 +470,19 @@ public class LeaseManagerImplTest {
         customer.setBirthDate(birthDate);
         customer.setFullName(fullName);
         customer.setIdCard(idCard);
-
         return customer;
     }
-
+*/
     private void assertDeepEquals(Lease expected, Lease actual) {
         assertEquals(expected.getId(), actual.getId());
-        assertEquals(expected.getCustomer(), actual.getCustomer());
-        assertEquals(expected.getBarrow(), actual.getBarrow());
+        assertEquals(expected.getCustomerId(), actual.getCustomerId());
+        assertEquals(expected.getBarrowId(), actual.getBarrowId());
         assertEquals(expected.getPrice(), actual.getPrice());
         assertEquals(expected.getRealEndTime(), actual.getRealEndTime());
         assertEquals(expected.getStartTime(), actual.getStartTime());
         assertEquals(expected.getExpectedEndTime(), actual.getExpectedEndTime());
-
     }
-    
+
     private void assertDeepEquals(List<Lease> expectedList, List<Lease> actualList) {
         for (int i = 0; i < expectedList.size(); i++) {
             Lease expected = expectedList.get(i);
