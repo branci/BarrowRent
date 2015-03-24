@@ -5,7 +5,6 @@
  */
 package barrowrent;
 
-import static barrowrent.BarrowManagerImpl.log;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -18,7 +17,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
-import java.util.logging.Logger;
 import javax.sql.DataSource;
 
 /**

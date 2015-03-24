@@ -34,7 +34,7 @@ public class CustomerManagerImplTest {
     
     @Before
     public void setUp() throws SQLException {
-        manager = new CustomerManagerImpl();
+        manager = new CustomerManagerImpl(null);                //NAHRAD NULL
     }
     
 
@@ -198,7 +198,7 @@ public class CustomerManagerImplTest {
     }
     
     @Test(expected = IllegalArgumentException.class)
-    public void updateBarrowWithWrongId() {
+    public void updateCustomerWithWrongId() {
         Customer customer = newCustomer("Jozko Mrkvicka",setDateDefault(),"0936SK25");
         manager.createCustomer(customer);
         Long customerId = customer.getId();
@@ -210,7 +210,7 @@ public class CustomerManagerImplTest {
     }
     
     @Test(expected = IllegalArgumentException.class)
-    public void updateBarrowWithNullName() {
+    public void updateCustomerWithNullName() {
         Customer customer = newCustomer("Jozko Mrkvicka",setDateDefault(),"0936SK25");
         manager.createCustomer(customer);
         Long customerId = customer.getId();
@@ -219,11 +219,23 @@ public class CustomerManagerImplTest {
         customer.setFullName(null);
         manager.updateCustomer(customer);
 
+    } 
+    
+    @Test(expected = IllegalArgumentException.class)
+    public void updateCustomerWithNullBirthDate() {
+        Customer customer = newCustomer("Jozko Mrkvicka",setDateDefault(),"0936SK25");
+        manager.createCustomer(customer);
+        Long customerId = customer.getId();
+        
+        customer = manager.getCustomerById(customerId);
+        customer.setBirthDate(null);
+        manager.updateCustomer(customer);
 
     } 
+    
 
     @Test(expected = IllegalArgumentException.class)
-    public void updateBarrowWithNullIdNumber() {
+    public void updateCustomerWithNullIdNumber() {
         Customer customer = newCustomer("Jozko Mrkvicka",setDateDefault(),"0936SK25");
         manager.createCustomer(customer);
         Long customerId = customer.getId();

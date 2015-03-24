@@ -15,9 +15,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-//import javax.activation.DataSource;
 import javax.sql.DataSource;
 
 /**
@@ -67,13 +64,13 @@ public class BarrowManagerImpl implements BarrowManager {
                 }
                 ResultSet keyRS = st.getGeneratedKeys();
                 barrow.setId(getKey(keyRS, barrow));
+            }
         } catch (SQLException ex) {
             log.error("db connection problem", ex);
 //HLASKA OK??
             throw new ServiceFailureException("Error when retrieving all barrrows", ex);
             
         }
-    }
     }
         
     private Long getKey(ResultSet keyRS, Barrow barrow) throws ServiceFailureException, SQLException {

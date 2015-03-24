@@ -26,7 +26,7 @@ public class BarrowManagerImplTest {
     
     @Before
     public void setUp() throws SQLException {
-        manager = new BarrowManagerImpl();
+        manager = new BarrowManagerImpl(null);              //NAHRAD NULL
     }
     
     @Test
