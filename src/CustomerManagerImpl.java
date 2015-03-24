@@ -123,7 +123,7 @@ public class CustomerManagerImpl implements CustomerManager {
             }
         } catch (SQLException ex) {
             log.error("db connection problem", ex);
-            throw new ServiceFailureException("Error when retrieving all graves", ex);
+            throw new ServiceFailureException("Error when retrieving all customers", ex);
         }
         
         

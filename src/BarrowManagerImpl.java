@@ -67,7 +67,6 @@ public class BarrowManagerImpl implements BarrowManager {
             }
         } catch (SQLException ex) {
             log.error("db connection problem", ex);
-//HLASKA OK??
             throw new ServiceFailureException("Error when retrieving all barrrows", ex);
             
         }
@@ -116,7 +115,7 @@ public class BarrowManagerImpl implements BarrowManager {
         }
         
         try (Connection conn = dataSource.getConnection()) {
-            try(PreparedStatement st = conn.prepareStatement("UPDATE barrow SET use=?,volumeLt=? WHERE id=?")) {
+            try(PreparedStatement st = conn.prepareStatement("UPDATE BARROW SET use=?,volumeLt=? WHERE id=?")) {
                 st.setString(1, barrow.getUse());
                 st.setDouble(2, barrow.getVolumeLt());
                 st.setLong(3,barrow.getId());
@@ -126,7 +125,7 @@ public class BarrowManagerImpl implements BarrowManager {
             }
         } catch (SQLException ex) {
             log.error("db connection problem", ex);
-            throw new ServiceFailureException("Error when retrieving all graves", ex);
+            throw new ServiceFailureException("Error when retrieving all barrows", ex);
         }
         
     }
@@ -134,7 +133,7 @@ public class BarrowManagerImpl implements BarrowManager {
     @Override
     public void deleteBarrow(Long barrowId) throws ServiceFailureException {
         try (Connection conn = dataSource.getConnection()) {
-            try (PreparedStatement st = conn.prepareStatement("DELETE FROM barrow WHERE id=?")) {
+            try (PreparedStatement st = conn.prepareStatement("DELETE FROM BARROW WHERE id=?")) {
                 st.setLong(1, barrowId);
                 if (st.executeUpdate() != 1) {
                     throw new ServiceFailureException("did not delete barrow with id =" + barrowId);
@@ -150,7 +149,7 @@ public class BarrowManagerImpl implements BarrowManager {
     public List<Barrow> findAllBarrows() throws ServiceFailureException {
         log.debug("finding all barrows");
         try (Connection conn = dataSource.getConnection()) {
-            try (PreparedStatement st = conn.prepareStatement("SELECT id,use,volumeLt FROM grave")) {
+            try (PreparedStatement st = conn.prepareStatement("SELECT id,use,volumeLt FROM BARROW")) {
                 ResultSet rs = st.executeQuery();
                 List<Barrow> result = new ArrayList<>();
                 while (rs.next()) {
@@ -175,7 +174,7 @@ public class BarrowManagerImpl implements BarrowManager {
     @Override
     public Barrow getBarrowById(Long id) throws ServiceFailureException {
         try (Connection conn = dataSource.getConnection()) {
-            try (PreparedStatement st = conn.prepareStatement("SELECT id,use,volumeLt FROM barrow WHERE id = ?")) {
+            try (PreparedStatement st = conn.prepareStatement("SELECT id,use,volumeLt FROM BARROW WHERE id = ?")) {
                 st.setLong(1, id);
                 ResultSet rs = st.executeQuery();
                 if (rs.next()) {
