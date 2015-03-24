@@ -126,6 +126,15 @@ public class CustomerManagerImplTest {
 
     }
     
+    @Test(expected = IllegalArgumentException.class) 
+    public void addContactWithNullBirthDate() {
+
+        Customer customer = newCustomer("Jozko Mrkvicka",null,"0936SK25");
+
+        manager.createCustomer(customer);
+
+    }
+    
     
     
     
@@ -251,6 +260,15 @@ public class CustomerManagerImplTest {
 
      }
      
+     @Test(expected = IllegalArgumentException.class)
+     public void deleteCustomerWithNullId() {
+        Customer customer = newCustomer("Jozko Mrkvicka",setDateDefault(),"0936SK25");
+        manager.createCustomer(customer);
+        
+        customer.setId(null);
+        manager.deleteCustomer(null);
+
+     }
      
      @Test(expected = IllegalArgumentException.class)
      public void deleteCustomerWithWrongId() {
