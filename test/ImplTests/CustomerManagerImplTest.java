@@ -266,7 +266,7 @@ public class CustomerManagerImplTest {
         manager.createCustomer(customer);
         
         customer.setId(null);
-        manager.deleteCustomer(null);
+        manager.deleteCustomer(customer.getId());
 
      }
      
@@ -276,7 +276,7 @@ public class CustomerManagerImplTest {
         manager.createCustomer(customer);
 
         customer.setId(1l);
-        manager.deleteCustomer(2l);
+        manager.deleteCustomer(customer.getId());
 
      }
         
