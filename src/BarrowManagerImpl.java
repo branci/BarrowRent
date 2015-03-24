@@ -122,6 +122,7 @@ public class BarrowManagerImpl implements BarrowManager {
             try(PreparedStatement st = conn.prepareStatement("UPDATE barrow SET use=?,volumeLt=? WHERE id=?")) {
                 st.setString(1, barrow.getUse());
                 st.setDouble(2, barrow.getVolumeLt());
+                st.setLong(3,barrow.getId());
                 if(st.executeUpdate()!=1) {
                     throw new IllegalArgumentException("cannot update barrow " + barrow);
                 }

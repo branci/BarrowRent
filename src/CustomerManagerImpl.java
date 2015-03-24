@@ -5,6 +5,7 @@
  */
 package barrowrent;
 
+import static barrowrent.BarrowManagerImpl.log;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -95,7 +96,39 @@ public class CustomerManagerImpl implements CustomerManager {
     
     @Override
     public void updateCustomer(Customer customer) throws ServiceFailureException {
-        throw new UnsupportedOperationException("Not supported yet.");
+        
+        if (customer == null) {
+            throw new IllegalArgumentException("customer is null");
+        }
+        if (customer.getId() == null) {
+            throw new IllegalArgumentException("customer with null id cannot be set");
+        }
+        if (customer.getFullName() == null) {
+            throw new IllegalArgumentException("customer full name is null");
+        }
+        if (customer.getIdCard() == null) {
+            throw new IllegalArgumentException("customer id card is null");
+        }
+        if (customer.getBirthDate()== null) {
+            throw new IllegalArgumentException("customer birthdate is null");
+        }
+        
+        try (Connection conn = dataSource.getConnection()) {
+            try(PreparedStatement st = conn.prepareStatement("UPDATE CUSTOMER SET fullName=?,birthDate=?,idCard=? WHERE id=?")) {
+                st.setString(1, customer.getFullName());
+                st.setDate(2, (Date) customer.getBirthDate());
+                st.setString(3, customer.getIdCard());
+                st.setLong(4,customer.getId());
+                if(st.executeUpdate()!=1) {
+                    throw new IllegalArgumentException("cannot update customer " + customer);
+                }
+            }
+        } catch (SQLException ex) {
+            log.error("db connection problem", ex);
+            throw new ServiceFailureException("Error when retrieving all graves", ex);
+        }
+        
+        
     }
     
     @Override
